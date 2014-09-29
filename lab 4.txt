@@ -19,10 +19,7 @@ where aid in(select aid
 3.
 select name, cid
 from customers
-where cid in(
-	select cid
-	from orders
-	EXCEPT
+where cid not in(
 	select cid
 	from orders
 	where aid = 'a04')
