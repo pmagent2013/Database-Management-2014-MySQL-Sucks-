@@ -1,0 +1,57 @@
+1. 
+select distinct a.city
+from agents a, orders o, customers c
+where o.aid = a.aid
+and c.name = 'Tiptop'
+and c.cid = o.cid
+
+2. 
+select distinct o2.pid
+from customers c,
+     orders o1,
+     orders o2
+where c.cid = o1.cid
+  and c.city = 'Kyoto'
+  and o2.aid = o1.aid
+
+3.
+select c.name
+from customers c
+except
+select c.name
+from customers c
+where cid in(
+	select cid
+	from orders o
+	)
+
+4.
+select c.name
+from customers c left outer join orders o
+on o.cid = c.cid
+where o.cid is null
+
+5.
+select distinct c.name, a.name
+from customers c,
+     orders o,
+     agents a
+where c.cid = o.cid
+and o.aid = a.aid
+and c.city = a.city
+
+6.
+select distinct c.city as city_name, c.name as customer_name, a.name as agent_name
+from customers c,
+     orders o,
+     agents a
+where a.city = c.city
+
+7.
+select name, city
+from customers
+where city in(select city
+	      from products
+	      group by city
+	      limit(1)
+)
