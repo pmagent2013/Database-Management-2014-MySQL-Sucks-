@@ -53,5 +53,6 @@ from customers
 where city in(select city
 	      from products
 	      group by city
+	      order by count(city)
 	      limit(1)
 )
