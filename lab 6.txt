@@ -1,0 +1,69 @@
+1.
+select name, city
+from customers
+where city in(select city
+	      from products
+	      group by city
+	      order by count(city) desc	      
+	      limit(1)
+)
+
+2. //Answer is same as number one because Dallas and Newark are the the cities that make the most different products but no customers live in Newark,
+   however should work correctly if a customer did live in Newark
+ 
+select name, city
+from customers
+where city in(select city
+	      from products
+	      group by city
+	      order by count(city) desc	      
+	      limit(2)
+)
+
+3. //Disclaimer: got idea for this from w3 schools
+select name
+from products
+where priceUSD >
+(select avg(priceUSD) from products)
+
+4.
+select c.name, o.pid, o.dollars
+from customers c,
+     orders o
+where c.cid = o.cid
+order by o.dollars
+
+5.
+select c.name, sum(o.dollars)
+from customers c right outer join orders o on c.cid = o.cid
+group by c.name, c.cid
+order by c.cid
+
+
+
+6.
+select c.name, p.name, a.names
+from customers c,
+     products p,
+     orders o,
+     agents a
+where c.cid = o.cid
+and   a.aid = o.aid
+and   p.pid = o.pid
+and a.city = 'New York'
+
+7.
+select *
+from orders o1
+where o1.dollars NOT IN
+(select ((o.qty * p.priceUSD)-((o.qty * p.priceUSD)*(c.discount/100))) as dollars
+from orders o,
+     customers c,
+     products p
+where o.cid = c.cid
+and   p.pid = o.pid
+and   o.cid = o1.cid
+)
+
+
+
