@@ -1,0 +1,138 @@
+DROP TABLE IF EXISTS people;
+DROP TABLE IF EXISTS actors;
+DROP TABLE IF EXISTS directors;
+DROP TABLE IF EXISTS movies;
+DROP TABLE IF EXISTS actorMovieIndex;
+DROP TABLE IF EXISTS directorMovieIndex;
+
+
+-- People --
+CREATE TABLE people (
+    pid             char(4) not null,
+    name            text,
+    address         text,
+    primary         key(pid)
+);
+
+-- actors --
+CREATE TABLE actors (
+    pid             char(4) not null,
+    hairColor       text,
+    eyeColor        text,
+    heightInches    int,
+    weightPounds    int,
+    aid             char(4) not null,
+    primary key(pid)
+);
+
+-- directors --
+CREATE TABLE directors (
+    pid             char(4) not null,
+    filmSchool      text,
+    did             char(4) not null,
+    primary key(pid)
+);
+
+-- actorMovieIndex --
+CREATE TABLE actorMovieIndex (
+    aid             char(4) not null,
+    mid             char(4) not null
+    
+);
+
+-- directorMovieIndex --
+CREATE TABLE directorMovieIndex (
+    did             char(4) not null,
+    mid             char(4) not null
+    
+);
+
+-- movies --
+CREATE TABLE movies (
+    mid                         char(4) not null,
+    name                        text,
+    yearReleased                int,
+    domesticBoxOfficeSalesUSDMillions   int,
+    foreignBoxOfficeSalesUSDMillions    int,
+    dvdSalesUSDMillions                 int
+);
+
+
+
+-- Insert Test Data --
+
+-- people --
+INSERT INTO people(pid, name, address)
+    VALUES('p001', 'Robert Downey JR', '32 Roe Avenue'),
+          ('p002', 'Mark Ruffalo', '17 Sweezy Street'),
+          ('p003', 'Jim Carrey', '24 Potter Street'),
+          ('p004', 'Joe Russo', '14 Bay Avenue'),
+          ('p005', 'Anthony Russo', '14 Bay Avenue'),
+          ('p006', 'Edgar Wright', '434 Carmen Street'),
+          ('p007', 'Sean Connery', '15 Main Street'),
+          ('p008', 'Joss Whedon', '34 Stark Drive'),
+          ('p009', 'George Lucas', '42 Naboo Way');
+          
+-- actors --
+INSERT INTO actors(pid, hairColor, eyeColor, heightInches, weightPounds, aid)
+    VALUES('p001', 'brown', 'brown', '69', '170', 'a001'),
+          ('p002', 'black', 'brown', '68', '155', 'a002'),
+          ('p003', 'brown', 'hazel', '74', '142', 'a003'),
+          ('p007', 'white', 'black', '74', '151', 'a004');
+
+-- directors --
+INSERT INTO directors(pid, filmSchool, did)
+    VALUES('p004', 'marist', 'd001'),
+          ('p005', 'albany', 'd002'),
+          ('p006', 'cortland', 'd003'),
+          ('p008', 'Wesleyan University', 'd004'),
+          ('p009', 'University of Southern California', 'd005');
+          
+-- movies --
+INSERT INTO movies(mid, name, yearReleased, domesticBoxOfficeSalesUSDMillions, foreignBoxOfficeSalesUSDMillions, dvdSalesUSDMillions)
+    Values('m001', 'Iron Man', '2008', '200', '300', '50'),
+          ('m002', 'Ace Ventura', '1994', '72', '80', '15'),
+          ('m003', 'Avengers', '2012', '900', '300', '200'),
+          ('m004', 'From Russia With Love', '1963', '24', '54', '31'),
+          ('m005', 'Indiana Jones and the Last Crusade', '1989', '197', '474', '322');
+          
+-- actorMovieIndex --
+INSERT INTO actorMovieIndex(aid, mid)
+    VALUES('a001', 'm001'),
+          ('a001', 'm003'),
+          ('a002', 'm002'),
+          ('a003', 'm003'),
+          ('a004', 'm004'),
+          ('a004', 'm005');
+          
+-- directorMovieIndex --
+INSERT INTO directorMovieIndex(did, mid)
+    VALUES('d001', 'm003'),
+          ('d002', 'm003'),
+          ('d003', 'm001'),
+          ('d002', 'm002'),
+          ('d005', 'm005'),
+          ('d004', 'm004');
+          
+          
+          
+-- Query to Return all Directors Sean Connery has worked with --
+
+select p.name
+from directors d,
+     actors a,
+     people p,
+     people p2,
+     actorMovieIndex ami,
+     directorMovieIndex dmi,
+     movies m
+where p2.name = 'Sean Connery'
+and   d.pid = p.pid
+and   m.mid = ami.mid
+and   m.mid = dmi.mid
+and   a.aid = ami.aid
+and   d.did = dmi.did
+and   ami.aid = a.aid
+and   ami.mid = dmi.mid
+and   a.pid = p2.pid
+          
