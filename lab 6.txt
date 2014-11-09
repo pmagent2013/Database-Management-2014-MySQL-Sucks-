@@ -42,7 +42,7 @@ order by c.cid
 
 
 6.
-select c.name, p.name, a.names
+select c.name, p.name, a.name
 from customers c,
      products p,
      orders o,
