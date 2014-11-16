@@ -1,0 +1,219 @@
+DROP TABLE IF EXISTS characters;
+DROP TABLE IF EXISTS charactersVoice;
+DROP TABLE IF EXISTS voiceActors;
+DROP TABLE IF EXISTS characterTraits;
+DROP TABLE IF EXISTS characterCurses;
+DROP TABLE IF EXISTS characterDeaths;
+DROP TABLE IF EXISTS characterSchoolPosition;
+DROP TABLE IF EXISTS schoolPosition;
+DROP TABLE IF EXISTS episodes;
+DROP TABLE IF EXISTS charactersInEpisodes;
+DROP TABLE IF EXISTS thingsParodied;
+DROP TABLE IF EXISTS parodiedInEpisodes;
+
+CREATE TABLE characters (
+    cid          char(4) unique,
+    fname        text,
+    lname        text,
+    age		 integer,
+    hairColor    text,
+    primary key(cid)
+);
+
+CREATE TABLE charactersVoice (
+    cid         char(4) unique,
+    vaid        char(4)
+);
+
+CREATE TABLE voiceActors (
+    vaid        char(4) unique,
+    name        text,
+    primary key(vaid)
+);
+
+CREATE TABLE characterTraits (
+    cid         char(4) unique,
+    trait       text
+);
+
+CREATE TABLE characterCurses (
+    cid         char(4),
+    episodeNumber    char(4),
+    curseCount  integer
+);
+
+CREATE TABLE characterDeaths (
+    cid                 char(4),
+    episodeNumber            char(4),
+    description    text
+);
+
+CREATE TABLE characterSchoolPosition (
+    spid            char(4),
+    cid             char(4)
+);
+
+CREATE TABLE schoolPosition (
+    spid            char(4),
+    tittle          text,
+    primary key(spid)
+);  
+
+CREATE TABLE charactersInEpisodes (
+    cid             char(4),
+    episodeNumber        char(4)
+);
+
+CREATE TABLE episodes (
+    episodeNumber            char(4),
+    seasonNumber             integer,
+    episodeInSeasonNumber    integer,
+    name                text,
+    airDate             date,
+    primary key(episodeNumber)
+);
+
+CREATE TABLE parodiedInEpisodes (
+    episodeNumber            char(4),
+    tpid                char(4)
+);
+
+CREATE TABLE thingsParodied (
+    tpid                char(4),
+    thingParodied       text,
+    primary key(tpid)
+);
+
+INSERT INTO characters(cid, fname, lname, age, hairColor)
+    values('c001', 'Stan', 'Marsh', '10', 'Black'),
+          ('c002', 'Kyle', 'Broflovski', '10', 'Red'),
+          ('c003', 'Kenny', 'McCormick', '10', 'Blond'),
+          ('c004', 'Eric', 'Cartman', '10', 'Brown'),
+          ('c005', 'Herbert', 'Garrison', '41', 'Gray'),
+          ('c006', 'Randy', 'Marsh', '45', 'Black'),
+          ('c007', 'Butters', 'Stotch', '10', 'Blond'),
+          ('c008', 'Token', 'Black', '10', 'Black'),
+          ('c009', 'Jerome(Chef)', 'McElroy', '38', 'black');
+          
+INSERT INTO voiceActors(vaid, name)
+    values('v001', 'Trey Parker'),
+          ('v002', 'Matt Stone'),
+          ('v003', 'Adrien Beard'),
+          ('v004', 'Issac Hayes');
+    
+INSERT INTO charactersVoice(cid, vaid)
+    values('c001', 'v001'),
+          ('c002', 'v002'),
+          ('c003', 'v002'),
+          ('c004', 'v001'),
+          ('c005', 'v001'),
+          ('c006', 'v001'),
+          ('c007', 'v002'),
+          ('c008', 'v003'),
+          ('c009', 'v004');
+    
+INSERT INTO characterTraits(cid, trait)
+    values('c001', 'Leader'),
+          ('c002', 'Jew'),
+          ('c003', 'Poor'),
+          ('c004', 'Fat Ass'),
+          ('c005', 'Gay'),
+          ('c006', 'Lorde'),
+          ('c007', 'Constantly Grounded'),
+          ('c008', 'Only Black Kid'),
+          ('c009', 'Chef');
+          
+INSERT INTO episodes(episodeNumber, seasonNumber, episodeInSeasonNumber, name, airDate)
+    values('66', '5', '1', 'It Hits the Fan','06-20-2001'),
+          ('137', '9', '12', 'Trapped in the Closet', '11-16-2005'),
+          ('161', '11', '8', 'Le Petit Tourette', '10-03-2007'),
+          ('215', '15', '6', 'City Sushi', '06-01-2011');
+
+INSERT INTO thingsParodied(tpid, thingParodied)
+    values('p001', 'Chicago Hope'),
+          ('p002', 'Tom Cruise'),
+          ('p003', 'Scientology'),
+          ('p004', 'R. Kelly'),
+          ('p005', 'Tourettes'),
+          ('p006', 'Asian Accents'),
+          ('p007', 'Split Personality Disorder'),
+          ('p008', 'Horror Movies'),
+          ('p009', 'Psycho');
+
+INSERT INTO parodiedInEpisodes(tpid, episodeNumber)
+    values('p001', '66'),
+          ('p002', '137'),
+          ('p003', '137'),
+          ('p004', '137'),
+          ('p005', '161'),
+          ('p006', '215'),
+          ('p007', '215'),
+          ('p008', '215'),
+          ('p009', '215');
+
+INSERT INTO charactersInEpisodes(cid, episodeNumber)
+    values('c001', '66'),
+          ('c002', '66'),
+          ('c003', '66'),
+          ('c004', '66'),
+          ('c005', '66'),
+          ('c007', '66'),
+          ('c001', '137'),
+          ('c002', '137'),
+          ('c003', '137'),
+          ('c004', '137'),
+          ('c006', '137'),
+          ('c007', '137'),
+          ('c008', '137'),
+          ('c001', '161'),
+          ('c002', '161'),
+          ('c003', '161'),
+          ('c004', '161'),
+          ('c005', '161'),
+          ('c007', '161'),
+          ('c001', '215'),
+          ('c002', '215'),
+          ('c003', '215'),
+          ('c004', '215'),
+          ('c007', '215'),
+          ('c008', '215');
+          
+INSERT INTO characterCurses(cid, episodeNumber, curseCount)
+    values('c001', '66', '18'),
+          ('c002', '66', '15'),
+          ('c003', '66', '14'),
+          ('c004', '66', '25'),
+          ('c005', '66', '4'),
+          ('c006', '66', '5'),
+          ('c007', '66', '6'),
+          ('c009', '66', '10'),
+          ('c001', '137', '4'),
+          ('c002', '137', '5'),
+          ('c003', '137', '2'),
+          ('c004', '137', '4'),
+          ('c006', '137', '3'),
+          ('c001', '161', '7'),
+          ('c002', '161', '6'),
+          ('c003', '161', '2'),
+          ('c004', '161', '94'),
+          ('c001', '215', '3'),
+          ('c002', '215', '6'),
+          ('c003', '215', '2'),
+          ('c004', '215', '5'),
+          ('c005', '215', '1'),
+          ('c007', '215', '8');
+    
+INSERT INTO characterDeaths(cid, episodeNumber, description)
+    values('c003', '66', 'vomited his intestines out after getting the plague');
+    
+INSERT INTO schoolPosition(spid, tittle)
+    values('s001', '3rd Grade Teacher'),
+          ('s002', '4th Grade Teacher'),
+          ('s003', 'chef');
+
+INSERT INTO characterSchoolPosition(spid, cid)
+    values('s001', 'c005'),
+          ('s002', 'c005'),
+          ('s003', 'c009');
+    
+    
